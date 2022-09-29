@@ -41,7 +41,8 @@
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_GRB + NEO_KHZ800);
 
-int brightness = 50;;
+int brightnessLow = 50;
+int brightnessHigh = 100;
 int wait = 1000;
 int buttonState = 0;
 
@@ -51,7 +52,7 @@ long lastTime = millis();
 void setup() {
   strip.begin();
   strip.show();
-  strip.setBrightness(brightness);
+  strip.setBrightness(brightnessLow);
 
   Serial.begin(9600);
   pinMode(BUTTON_PIN, INPUT);
@@ -60,12 +61,13 @@ void setup() {
 void TurnOn(int pin, long elapsedMS) {
   strip.setPin(pin);
   strip.fill(strip.Color(0, 0, 127));
+  strp.setBrightness(brightnessHigh);
   strip.show();
 
   static long ledTime = 0;
   ledTime += elapsedMS;
   if (ledTime >= wait) {
-    strip.clear();
+    strip.setBrightness(brightnessLow);
     strip.show();
     ledTime -= wait;
   }
